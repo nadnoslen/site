@@ -5,6 +5,8 @@ import { Link } from "@reach/router"
 import Code from "../components/code"
 import { CaretDownWide } from "../components/icons"
 import RoutesService from "../lib/routes-service"
+import useApiDocs from "../hooks/use-api-docs"
+import ClassViewer from "./docs/api/class-viewer"
 
 const MAX_WIDTH = 1400
 const MAIN_WIDTH = 870
@@ -36,6 +38,12 @@ export default function DocsPage(props) {
   })
   let tableOfContentsItems = mdxPage && mdxPage.tableOfContents.items[0].items
 
+  let { publicClasses } = useApiDocs()
+
+  let docRoutes = routesService
+    .routesForFullPath("/docs")
+    .filter(route => route.name !== "api")
+
   return (
     <div className="bg-white">
       <MobileNav routesService={routesService} />
@@ -50,7 +58,7 @@ export default function DocsPage(props) {
         >
           <nav className="pl-7 pt-14 pr-6 sticky top-0 leading-none h-screen overflow-y-scroll">
             <ul className="mt-2">
-              {routesService.routesForFullPath("/docs").map(route => (
+              {docRoutes.map(route => (
                 <li className="mb-8" key={route.fullPath}>
                   <span className="text-gray-800 text-base+ font-medium">
                     {route.label}
@@ -64,6 +72,21 @@ export default function DocsPage(props) {
                   </ul>
                 </li>
               ))}
+              <li className="mb-8">
+                <span className="text-gray-800 text-base+ font-medium">
+                  API
+                </span>
+                <ul className="ml-2 mt-2 font-normal leading-snug">
+                  {publicClasses.map(publicClass => (
+                    <NavLink
+                      fullPath={`/docs/api/class/${publicClass.slug}`}
+                      key={publicClass.name}
+                    >
+                      {publicClass.name}
+                    </NavLink>
+                  ))}
+                </ul>
+              </li>
             </ul>
           </nav>
         </div>
