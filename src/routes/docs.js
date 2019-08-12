@@ -6,7 +6,6 @@ import Code from "../components/code"
 import { CaretDownWide } from "../components/icons"
 import RoutesService from "../lib/routes-service"
 import useApiDocs from "../hooks/use-api-docs"
-import ClassViewer from "./docs/api/class-viewer"
 
 const MAX_WIDTH = 1400
 const MAIN_WIDTH = 870
